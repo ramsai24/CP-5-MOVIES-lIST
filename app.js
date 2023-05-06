@@ -149,11 +149,6 @@ app.get("/directors/", async (request, response) => {
   );
 });
 
-const convertCamelToSankeMoviesList = (dbObject) => {
-  return {
-    movieName: dbObject.movie_name,
-  };
-};
 //API 7
 app.get("/directors/:directorId/movies/", async (request, response) => {
   const { directorId } = request.params;
@@ -162,9 +157,15 @@ app.get("/directors/:directorId/movies/", async (request, response) => {
   const sqlQuery = `
   SELECT movie_name 
   FROM movie
-  WHERE director_id = ${directorId};`;
+  WHERE director_id = "${directorId}";`;
 
   const moviesList = await db.all(sqlQuery);
+
+  const convertCamelToSankeMoviesList = (dbObject) => {
+    return {
+      movieName: dbObject.movie_name,
+    };
+  };
 
   response.send(
     moviesList.map((dbObjects) => convertCamelToSankeMoviesList(dbObjects))
