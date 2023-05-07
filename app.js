@@ -46,14 +46,10 @@ const convertSankeToCamel1 = (dbObject) => {
 //API 1
 
 app.get("/movies/", async (request, response) => {
-  const sqlQuery = `SELECT movie_name  FROM movie;`;
+  const sqlQuery = `SELECT movie_name FROM movie;`;
 
   const moviesList = await db.all(sqlQuery);
-  response.send(
-    moviesList.map((item) => {
-      return convertSankeToCamel1(item);
-    })
-  );
+  response.send(moviesList.map((item) => convertSankeToCamel1(item)));
 });
 
 //  moviesList.map((dbObjects) => {
@@ -107,7 +103,7 @@ app.put("/movies/:moviesId/", async (request, response) => {
     SET 
         director_id = ${directorId},
         movie_name = '${movieName}',
-        lead_actor = '${leadActor}';
+        lead_actor = '${leadActor}'
     WHERE 
         movie_id = ${moviesId}`;
 
@@ -157,7 +153,7 @@ app.get("/directors/:directorId/movies/", async (request, response) => {
   const sqlQuery = `
   SELECT movie_name 
   FROM movie
-  WHERE director_id = "${directorId}";`;
+  WHERE director_id = ${directorId}`;
 
   const moviesList = await db.all(sqlQuery);
 
@@ -173,4 +169,3 @@ app.get("/directors/:directorId/movies/", async (request, response) => {
 });
 
 module.exports = app;
-///
